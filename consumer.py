@@ -1,4 +1,4 @@
-import models.sensor
+import models.sensor as sensor
 import redis
 from uuid import uuid4
 import time
@@ -25,7 +25,7 @@ def get_data():
     # read_samples = r.xread({'mystream': b"0-0"})
     # Parse the JSON string back into a list
     print(stream_data[-1])
-    models.sensor.record_datas()
+    sensor.record_datas()
 
 
 while 1:
