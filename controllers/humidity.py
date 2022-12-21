@@ -2,7 +2,7 @@ import math
 
 class Humidity :
     
-    def describe_humidity(humidity):
+    def describe_humidity(self, humidity):
         """Convert relative humidity into wet/good/dry description."""
         if 30 < humidity <= 75:
             description = "good"
@@ -12,7 +12,7 @@ class Humidity :
             description = "dry"
         return description
 
-    def adjusted_humidity(bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c):
+    def adjusted_humidity(self, bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c):
         raw_hum = bme280.get_humidity()
         # comp_hum = comp_hum_slope * raw_hum + comp_hum_intercept
         comp_hum = comp_hum_quad_a * \
