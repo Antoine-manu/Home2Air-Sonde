@@ -12,7 +12,7 @@ from pms5003 import PMS5003, ReadTimeoutError as pmsReadTimeoutError
 from bme280 import BME280
 from enviroplus import gas
 from datetime import datetime
-from config.config import Config
+from config.configScript import Config
 
 #Init config
 config = Config()
