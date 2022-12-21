@@ -1,4 +1,4 @@
-import sensor
+import models.sensor as sensor
 import redis
 from uuid import uuid4
 import time

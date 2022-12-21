@@ -4,7 +4,7 @@ from enviroplus import gas
 class Config :
     def retrieve_config():
         try:
-            with open('./config/config.json', 'r') as f:
+            with open('../config/config.json', 'r') as f:
                 print(f)
                 parsed_config_parameters = json.loads(f.read())
                 print('Retrieved Config', parsed_config_parameters)
