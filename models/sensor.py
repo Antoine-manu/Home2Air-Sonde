@@ -243,8 +243,7 @@ def read_gas_in_ppm(gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_
     red_in_ppm = math.pow(10, -1.25 * math.log10(red_ratio) + 0.64)
     oxi_in_ppm = math.pow(10, math.log10(oxi_ratio) - 0.8129)
     nh3_in_ppm = math.pow(10, -1.8 * math.log10(nh3_ratio) - 0.163)
-     print("Red Rs:", round(red_in_ppm, 0), "Oxi Rs:", round(
-         oxi_in_ppm, 0), "NH3 Rs:", round(nh3_in_ppm, 0))
+     print("Red Rs:", round(red_in_ppm, 0), "Oxi Rs:", round(oxi_in_ppm, 0), "NH3 Rs:", round(nh3_in_ppm, 0))
     return red_in_ppm, oxi_in_ppm, nh3_in_ppm
 
 
