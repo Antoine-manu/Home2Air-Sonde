@@ -34,7 +34,7 @@ def retrieve_config():
             parsed_config_parameters = json.loads(f.read())
             print('Retrieved Config', parsed_config_parameters)
     except IOError:
-        print(IOError)
+        print('Error retrieved config')
     temp_offset = parsed_config_parameters['temp_offset']
     altitude = parsed_config_parameters['altitude']
     # Enables the display and flags that the
