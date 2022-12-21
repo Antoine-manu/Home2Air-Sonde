@@ -8,7 +8,6 @@ try:
     ltr559 = LTR559()
 except ImportError:
     import ltr559
-from pms5003 import PMS5003, ReadTimeoutError as pmsReadTimeoutError
 from bme280 import BME280
 from enviroplus import gas
 from datetime import datetime

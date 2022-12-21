@@ -1,3 +1,5 @@
+from pms5003 import PMS5003, ReadTimeoutError as pmsReadTimeoutError
+
 class Particules : 
     def get_particules_values(self,diameter):
         try:
