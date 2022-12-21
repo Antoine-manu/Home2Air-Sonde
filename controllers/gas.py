@@ -9,9 +9,9 @@ class Gas :
         raw_nh3_rs = round(gas_data.nh3, 0)
         return raw_red_rs, raw_oxi_rs, raw_nh3_rs
 
-    red_r0, oxi_r0, nh3_r0 = read_raw_gas()
 
     def read_gas_in_ppm(self, gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_hum, raw_barometer, gas_sensors_warm):
+        red_r0, oxi_r0, nh3_r0 = self.read_raw_gas()
 
         if gas_sensors_warm:
             comp_red_rs, comp_oxi_rs, comp_nh3_rs, raw_red_rs, raw_oxi_rs, raw_nh3_rs = comp_gas(gas_calib_temp,
