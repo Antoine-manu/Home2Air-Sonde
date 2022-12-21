@@ -7,7 +7,7 @@ class Config :
             with open('./config/config.json', 'r') as f:
                 print(f)
                 parsed_config_parameters = json.loads(f.read())
-                print('Retrieved Config', parsed_config_parameters)
+                print('Retrieved Config')
         except IOError:
             print('Error retrieved config')
         temp_offset = parsed_config_parameters['temp_offset']
