@@ -2,7 +2,7 @@ import math
 from enviroplus import gas
 
 class Gas :
-    def read_raw_gas():
+    def read_raw_gas(self):
         gas_data = gas.read_all()
         raw_red_rs = round(gas_data.reducing, 0)
         raw_oxi_rs = round(gas_data.oxidising, 0)
