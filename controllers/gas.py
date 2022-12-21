@@ -10,10 +10,9 @@ class Gas :
         return raw_red_rs, raw_oxi_rs, raw_nh3_rs
 
 
-    red_r0, oxi_r0, nh3_r0 = read_raw_gas()
-
-
-    def read_gas_in_ppm(gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_hum, raw_barometer, gas_sensors_warm):
+    def read_gas_in_ppm(self, gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_hum, raw_barometer, gas_sensors_warm):
+        red_r0, oxi_r0, nh3_r0 = Gas.read_raw_gas()
+        
         if gas_sensors_warm:
             comp_red_rs, comp_oxi_rs, comp_nh3_rs, raw_red_rs, raw_oxi_rs, raw_nh3_rs = comp_gas(gas_calib_temp,
                                                                                                 gas_calib_hum,
@@ -46,7 +45,17 @@ class Gas :
         return red_in_ppm, oxi_in_ppm, nh3_in_ppm
 
 
-    def comp_gas(gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_hum, raw_barometer):
+    def comp_gas(self, gas_calib_temp, gas_calib_hum, gas_calib_bar, raw_temp, raw_hum, raw_barometer,):
+        red_temp_comp_factor = -0.015
+        red_hum_comp_factor = 0.0125
+        red_bar_comp_factor = -0.0053
+        oxi_temp_comp_factor = -0.017
+        oxi_hum_comp_factor = 0.0115
+        oxi_bar_comp_factor = -0.0072
+        nh3_temp_comp_factor = -0.02695
+        nh3_hum_comp_factor = 0.0094
+        nh3_bar_comp_factor = 0.003254
+
         gas_data = gas.read_all()
         gas_temp_diff = raw_temp - gas_calib_temp
         gas_hum_diff = raw_hum - gas_calib_hum

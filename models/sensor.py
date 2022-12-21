@@ -61,17 +61,6 @@ if enable_particle_sensor:
     pms5003 = PMS5003()
     time.sleep(1)
 
-red_temp_comp_factor = -0.015
-red_hum_comp_factor = 0.0125
-red_bar_comp_factor = -0.0053
-oxi_temp_comp_factor = -0.017
-oxi_hum_comp_factor = 0.0115
-oxi_bar_comp_factor = -0.0072
-nh3_temp_comp_factor = -0.02695
-nh3_hum_comp_factor = 0.0094
-nh3_bar_comp_factor = 0.003254
-
-
 if enable_display and not enable_eco2_tvoc:
     # protection cover in place) and no ECO2 or TVOC sensor is in place
     # Cubic polynomial temp comp coefficients adjusted by config's temp_offset
