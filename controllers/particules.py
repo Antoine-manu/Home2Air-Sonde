@@ -1,5 +1,5 @@
 class Particules : 
-    def get_particules_values(diameter):
+    def get_particules_values(self,diameter):
         try:
             data = pms5003.read()
         except pmsReadTimeoutError:
