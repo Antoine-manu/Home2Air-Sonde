@@ -14,6 +14,9 @@ from enviroplus import gas
 from datetime import datetime
 from config.config import Config
 
+#Init config
+config = Config()
+
 # BME280 temperature/pressure/humidity sensor
 bme280 = BME280()
 

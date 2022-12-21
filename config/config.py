@@ -1,3 +1,5 @@
+from enviroplus import gas
+
 class Config :
     def retrieve_config():
         try:
