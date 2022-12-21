@@ -1,5 +1,5 @@
 from os import environ
-import models.sensor
+import sensor
 from redis import Redis
 from uuid import uuid4
 from time import sleep
