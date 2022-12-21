@@ -21,7 +21,7 @@ class Gas :
                                                                                                 raw_hum, raw_barometer)
             print("Reading Compensated Gas sensors after warmup completed")
         else:
-            raw_red_rs, raw_oxi_rs, raw_nh3_rs = read_raw_gas()
+            raw_red_rs, raw_oxi_rs, raw_nh3_rs = self.read_raw_gas()
             comp_red_rs = raw_red_rs
             comp_oxi_rs = raw_oxi_rs
             comp_nh3_rs = raw_nh3_rs
