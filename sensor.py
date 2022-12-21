@@ -12,13 +12,27 @@ from pms5003 import PMS5003, ReadTimeoutError as pmsReadTimeoutError
 from bme280 import BME280
 from enviroplus import gas
 from datetime import datetime
+
 from config.configScript import Config
+from controllers.gas import Gas
+from controllers.tempertature import Temperature
+from controllers.particules import Particules
+from controllers.humidity import Humidity
+from controllers.altitude import Altitude
+
+# BME280 temperature/pressure/humidity sensor
+bme280 = BME280()
 
 #Init config
 config = Config()
 
-# BME280 temperature/pressure/humidity sensor
-bme280 = BME280()
+#Init classes
+gasClass = Gas()
+temperatureClass = Temperature()
+particuleClass = Particules()
+humidityClass = Humidity()
+altitudeClass = Altitude()
+
 
 
 class Datas:
@@ -96,69 +110,27 @@ else:
     comp_hum_quad_c = -25.8102
 
 
-def describe_humidity(humidity):
-    """Convert relative humidity into wet/good/dry description."""
-    if 30 < humidity <= 75:
-        description = "good"
-    elif humidity > 75:
-        description = "wet"
-    else:
-        description = "dry"
-    return description
-
-
-def adjusted_temperature():
-    raw_temp = bme280.get_temperature()
-    # comp_temp = comp_temp_slope * raw_temp + comp_temp_intercept
-    comp_temp = (comp_temp_cub_a * math.pow(raw_temp, 3) + comp_temp_cub_b * math.pow(raw_temp, 2) +
-                 comp_temp_cub_c * raw_temp + comp_temp_cub_d)
-    return comp_temp
-
-
-def get_particules_values(diameter):
-    try:
-        data = pms5003.read()
-    except pmsReadTimeoutError:
-        print("Failed to read PMS5003")
-    else:
-        return float(data.pm_ug_per_m3(diameter))
-
-
-def adjusted_humidity():
-    raw_hum = bme280.get_humidity()
-    # comp_hum = comp_hum_slope * raw_hum + comp_hum_intercept
-    comp_hum = comp_hum_quad_a * \
-        math.pow(raw_hum, 2) + comp_hum_quad_b * raw_hum + comp_hum_quad_c
-    return min(100, comp_hum)
-
-
-def barometer_altitude_comp_factor(alt, temp):
-    comp_factor = math.pow(
-        1 - (0.0065 * altitude/(temp + 0.0065 * alt + 273.15)), -5.257)
-    return comp_factor
-
-
 def record_datas():
     # Connect to the Redis server
     r = redis.Redis(host='localhost', port=6379, db=1)
     date = str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))
 
 # Create a stream with the name "mystream"
-    gas_in_ppm = read_gas_in_ppm(bme280.get_temperature(), round(bme280.get_humidity(), 1), round(bme280.get_pressure(
-    ) * barometer_altitude_comp_factor(altitude, bme280.get_temperature()), 1),
-        adjusted_temperature(), adjusted_humidity(), bme280.get_pressure(), False)
-    print(describe_humidity(round(adjusted_humidity(), 2)))
+    gas_in_ppm = gasClass.read_gas_in_ppm(bme280.get_temperature(), round(bme280.get_humidity(), 1), round(bme280.get_pressure(
+    ) * altitudeClass.barometer_altitude_comp_factor(altitude, bme280.get_temperature()), altitude),
+        temperatureClass.adjusted_temperature(bme280, comp_temp_cub_a, comp_temp_cub_b, comp_temp_cub_c ,comp_temp_cub_d), humidityClass.adjusted_humidity(bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c), bme280.get_pressure(), False)
+    print(humidityClass.describe_humidity(round(humidityClass.adjusted_humidity(bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c), 2)))
     results = []
-    results.append(round(adjusted_temperature(), 2))
+    results.append(round(temperatureClass.adjusted_temperature(bme280, comp_temp_cub_a, comp_temp_cub_b, comp_temp_cub_c ,comp_temp_cub_d), 2))
     results.append(round(bme280.get_pressure(), 2))
-    results.append(round(adjusted_humidity(), 2))
+    results.append(round(humidityClass.adjusted_humidity(bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c), 2))
     results.append(round(ltr559.get_lux(), 2))
     results.append(round(gas_in_ppm[0], 2))
     results.append(round(gas_in_ppm[1], 2))
     results.append(round(gas_in_ppm[2], 2))
-    results.append(round(get_particules_values(1.0)))
-    results.append(round(get_particules_values(2.5)))
-    results.append(round(get_particules_values(10)))
+    results.append(round(particuleClass.get_particules_values(1.0)))
+    results.append(round(particuleClass.get_particules_values(2.5)))
+    results.append(round(particuleClass.get_particules_values(10)))
     results.append(date)
     r.xadd('mystream', {'mylist': json.dumps(results)})
     return results
