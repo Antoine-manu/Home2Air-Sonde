@@ -1,3 +1,4 @@
+import datetime
 import time
 try:
     # Transitional fix for breaking change in LTR559
@@ -99,7 +100,7 @@ def record_datas():
     gas_in_ppm = gasClass.read_gas_in_ppm(bme280.get_temperature(), round(bme280.get_humidity(), 1), round(bme280.get_pressure(
     ) * altitudeClass.barometer_altitude_comp_factor(altitude, bme280.get_temperature()), 1),
         temperatureClass.adjusted_temperature(bme280, comp_temp_cub_a, comp_temp_cub_b, comp_temp_cub_c, comp_temp_cub_d), humidityClass.adjusted_humidity(bme280, comp_hum_quad_a, comp_hum_quad_b, comp_hum_quad_c), bme280.get_pressure(), False)
-
+    now = datetime.now()
     return {"temperature": round(temperatureClass.adjusted_temperature(
         bme280, comp_temp_cub_a, comp_temp_cub_b, comp_temp_cub_c, comp_temp_cub_d), 2),
         "pressure": round(bme280.get_pressure(), 2),
@@ -112,7 +113,7 @@ def record_datas():
         "particules0": particuleClass.get_particules_values(1.0),
         "particules1": particuleClass.get_particules_values(2.5),
         "particules2": particuleClass.get_particules_values(10),
-        "date": str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))}
+        "date": now.timestamp()}
 
 
 # Compensation factors for temperature, humidity and air pressure

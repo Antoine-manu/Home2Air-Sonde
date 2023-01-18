@@ -3,6 +3,7 @@ import models.sensor as sensor
 from redis import Redis
 from time import sleep
 
+
 def connect_to_redis():
     hostname = environ.get("REDIS_HOSTNAME", "localhost")
     port = environ.get("REDIS_PORT", 6379)
@@ -12,10 +13,13 @@ def connect_to_redis():
 
 def produce_datas(redis_connection):
     try:
-        redis_connection.xadd('raspberry', sensor.record_datas())
+        if redis_connection.xadd('raspberry', sensor.record_datas()):
+            print(sensor.record_datas())
+        else :
+            print("Erreur")
+        sleep(60)
     except ConnectionError as e:
         print("ERROR REDIS CONNECTION: {}".format(e))
-    sleep(0.5)
 
 
 if __name__ == "__main__":
